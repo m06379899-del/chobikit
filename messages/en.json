@@ -1,0 +1,125 @@
+{
+  "meta": {
+    "siteName": "ChobiKit",
+    "homeTitle": "ChobiKit — Free Image Tools That Never Upload Your Files",
+    "homeDescription": "Compress, convert and resize images right in your browser. Free, fast and private — your files never leave your device."
+  },
+  "header": {
+    "home": "Home",
+    "compress": "Compress",
+    "convert": "Convert",
+    "resize": "Resize",
+    "language": "Language",
+    "menu": "Menu",
+    "close": "Close"
+  },
+  "theme": {
+    "toLight": "Switch to light mode",
+    "toDark": "Switch to dark mode"
+  },
+  "tools": {
+    "compress": {
+      "name": "Compress",
+      "icon": "🗜️",
+      "tagline": "Make images smaller",
+      "description": "Shrink JPG, PNG and WebP files to a size you choose — with almost no visible quality loss.",
+      "pageDescription": "Compress images in your browser. Choose a quality or a target file size — nothing is uploaded."
+    },
+    "convert": {
+      "name": "Convert",
+      "icon": "🔄",
+      "tagline": "Change image format",
+      "description": "Convert between JPG, PNG, WebP and AVIF. iPhone HEIC photos supported too.",
+      "pageDescription": "Convert images between JPG, PNG, WebP and AVIF right in your browser — including HEIC from iPhone."
+    },
+    "resize": {
+      "name": "Resize",
+      "icon": "📐",
+      "tagline": "Change image dimensions",
+      "description": "Resize by pixels or percentage, with ready presets for Facebook, Instagram, YouTube and more.",
+      "pageDescription": "Resize images by pixels or percentage, with presets for Facebook, Instagram, YouTube and WhatsApp."
+    }
+  },
+  "home": {
+    "heroBadge": "100% private — nothing is uploaded",
+    "heroTitle": "Free image tools. Your files never leave your device.",
+    "heroSubtitle": "Compress, convert and resize photos right inside your browser. Everything runs on your own phone or computer — no uploads, no waiting, no accounts.",
+    "openTool": "Open {tool}",
+    "whyTitle": "Why ChobiKit?",
+    "why": {
+      "private": {
+        "title": "Private by design",
+        "text": "Your images are processed on your own device. No file is ever sent to any server — you can even use the tools offline."
+      },
+      "free": {
+        "title": "Free, no sign-up",
+        "text": "All tools are free and unlimited. No accounts, no watermarks, no hidden limits."
+      },
+      "fast": {
+        "title": "Fast on any phone",
+        "text": "Built to work smoothly on mid-range Android phones. The work is done by your device, so there is no upload or download wait."
+      },
+      "bilingual": {
+        "title": "বাংলা and English",
+        "text": "The whole site works in both Bengali and English, so you can use it in the language you think in."
+      }
+    }
+  },
+  "common": {
+    "privacyBadge": "🔒 Your images stay on your device",
+    "privacyNote": "Processed on your device. Nothing is uploaded.",
+    "comingSoon": "This tool is being built and will be available soon.",
+    "backHome": "Back to home"
+  },
+  "footer": {
+    "privacyLine": "Your files are processed on your device and never uploaded to any server.",
+    "about": "About",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "contact": "Contact",
+    "copyright": "© {year} ChobiKit. Free image tools that respect your privacy."
+  },
+  "pages": {
+    "about": {
+      "title": "About ChobiKit",
+      "body": [
+        "ChobiKit (\"chobi\" means picture in Bengali) is a collection of free image tools that run entirely in your own browser. There is no server doing the work — when you compress, convert or resize a photo, your own phone or computer does it, using the same technology that renders web pages.",
+        "We built ChobiKit because most online image tools upload your photos to a server first. That is slow, it eats your mobile data, and it means your private photos pass through someone else's computer. ChobiKit works the opposite way: the tool comes to you, and your files stay with you.",
+        "ChobiKit is made for everyone, with special care for users in Bangladesh and India — it is fully translated into Bengali, works well on mid-range phones, and costs nothing."
+      ]
+    },
+    "privacy": {
+      "title": "Privacy",
+      "body": [
+        "The short version: your images never leave your device.",
+        "When you use any ChobiKit tool, your files are processed locally by your own browser. No image, video or file content is ever uploaded, stored or sent to us or to anyone else. The tools even keep working if you go offline after the page has loaded.",
+        "We do not use accounts, cookies, or tracking that identifies you. We do not collect your files, your names, or your email addresses.",
+        "If analytics are enabled on this site, they use a privacy-friendly, cookie-free service that only records anonymous page-view counts — never file names, file contents, or anything you do inside a tool. Analytics can be switched off entirely.",
+        "In short: what happens on your device stays on your device."
+      ]
+    },
+    "terms": {
+      "title": "Terms of Use",
+      "body": [
+        "ChobiKit is provided free of charge, for anyone to use, as it is. There are no accounts and no agreements to sign.",
+        "The tools run on your own device and depend on your device's browser, memory and speed. Results may vary between devices and browsers, and very large files may fail on devices with limited memory. Please keep backups of anything important — you are responsible for your own files.",
+        "The site is offered without any warranty. To the fullest extent permitted by law, the ChobiKit team is not liable for any loss or damage resulting from the use of the site or its tools.",
+        "You agree not to use ChobiKit for anything unlawful, and not to attempt to interfere with the site's operation.",
+        "These terms may be updated from time to time; the latest version will always be on this page."
+      ]
+    },
+    "contact": {
+      "title": "Contact",
+      "body": [
+        "Found a bug, or want to suggest a tool? We would love to hear from you.",
+        "The easiest way to reach us is by email:"
+      ],
+      "emailLabel": "Email us at"
+    }
+  },
+  "notFound": {
+    "title": "Page not found",
+    "text": "The page you are looking for does not exist or has moved.",
+    "backHome": "Back to home"
+  }
+}

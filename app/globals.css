@@ -1,26 +1,95 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * Design tokens. Dark is the default theme (:root); adding the `light`
+ * class on <html> swaps every token. Both themes share the same hues.
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --ck-bg: #0b1220;
+  --ck-surface: #121b2e;
+  --ck-surface-2: #18233b;
+  --ck-border: #24304d;
+  --ck-primary: #3b82f6;
+  --ck-primary-strong: #60a5fa;
+  --ck-on-primary: #ffffff;
+  --ck-text: #e6edf7;
+  --ck-muted: #9fb0cc;
+  --ck-accent-compress: #2dd4bf;
+  --ck-accent-convert: #fb923c;
+  --ck-accent-resize: #c084fc;
+  --ck-success: #4ade80;
+  --ck-warning: #fbbf24;
+  --ck-error: #f87171;
+  color-scheme: dark;
+}
+
+:root.light {
+  --ck-bg: #f3f7fc;
+  --ck-surface: #ffffff;
+  --ck-surface-2: #eaf1fa;
+  --ck-border: #d8e2f0;
+  --ck-primary: #2563eb;
+  --ck-primary-strong: #1d4ed8;
+  --ck-on-primary: #ffffff;
+  --ck-text: #1b2437;
+  --ck-muted: #52627e;
+  --ck-accent-compress: #0d9488;
+  --ck-accent-convert: #ea580c;
+  --ck-accent-resize: #9333ea;
+  --ck-success: #16a34a;
+  --ck-warning: #d97706;
+  --ck-error: #dc2626;
+  color-scheme: light;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-bg: var(--ck-bg);
+  --color-surface: var(--ck-surface);
+  --color-surface-2: var(--ck-surface-2);
+  --color-border: var(--ck-border);
+  --color-primary: var(--ck-primary);
+  --color-primary-strong: var(--ck-primary-strong);
+  --color-on-primary: var(--ck-on-primary);
+  --color-text: var(--ck-text);
+  --color-muted: var(--ck-muted);
+  --color-accent-compress: var(--ck-accent-compress);
+  --color-accent-convert: var(--ck-accent-convert);
+  --color-accent-resize: var(--ck-accent-resize);
+  --color-success: var(--ck-success);
+  --color-warning: var(--ck-warning);
+  --color-error: var(--ck-error);
+  --font-sans: var(--font-nunito), var(--font-hind), ui-sans-serif, system-ui,
+    sans-serif;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--ck-bg);
+  color: var(--ck-text);
+  font-family: var(--font-sans);
+}
+
+/*
+ * Per-tool accent helpers. Tools pass their accent color through
+ * inline styles (color / color-mix) so no dynamic class names are needed.
+ */
+* {
+  scrollbar-color: var(--ck-border) transparent;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ck-primary-strong);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
