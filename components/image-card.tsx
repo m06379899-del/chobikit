@@ -23,16 +23,33 @@ const STATUS_KEYS = {
 export default function ImageCard({
   item,
   onRemove,
+  onSelect,
+  selected,
+  errorKeys,
   children,
 }: {
   item: BatchItem;
   onRemove: (id: string) => void;
+  onSelect?: (id: string) => void;
+  selected?: boolean;
+  /** Translation keys for item-level errors, looked up from workbench ns. */
+  errorKeys?: Record<string, "corrupt" | "memory" | "errorGeneric">;
   children?: ReactNode;
 }) {
   const t = useTranslations("workbench");
 
+  const errorKey =
+    item.status === "error"
+      ? (errorKeys?.[item.errorKey ?? "unknown"] ?? "errorGeneric")
+      : null;
+
   return (
-    <div className="flex flex-col gap-3 rounded-2xl border border-border bg-surface p-4">
+    <div
+      onClick={() => onSelect?.(item.id)}
+      className={`flex flex-col gap-3 rounded-2xl border bg-surface p-4 transition-colors ${
+        selected ? "border-primary" : "border-border"
+      } ${onSelect ? "cursor-pointer" : ""}`}
+    >
       <div className="flex items-center gap-3">
         {/* eslint-disable-next-line @next/next/no-img-element -- blob URL thumbnails cannot go through next/image */}
         <img
@@ -71,13 +88,19 @@ export default function ImageCard({
         </span>
         <button
           type="button"
-          onClick={() => onRemove(item.id)}
+          onClick={(event) => {
+            event.stopPropagation();
+            onRemove(item.id);
+          }}
           aria-label={`${t("remove")}: ${item.file.name}`}
           className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-muted transition-colors hover:bg-surface-2 hover:text-text"
         >
           <span aria-hidden="true">✕</span>
         </button>
       </div>
+      {errorKey && (
+        <p className="text-sm text-error">{t(errorKey)}</p>
+      )}
       {children}
     </div>
   );

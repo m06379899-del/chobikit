@@ -20,6 +20,8 @@ export interface BatchItem {
   errorKey?: "corrupt" | "memory" | "unknown";
   /** Present once a tool has processed the image. */
   result?: BatchResult;
+  /** Object URL for the processed result (used by the compare slider). */
+  resultUrl?: string;
 }
 
 export interface ValidationError {
@@ -55,7 +57,10 @@ export function useToolBatch(): UseToolBatch {
   useEffect(() => {
     return () => {
       setItems((current) => {
-        for (const item of current) URL.revokeObjectURL(item.url);
+        for (const item of current) {
+          URL.revokeObjectURL(item.url);
+          if (item.resultUrl) URL.revokeObjectURL(item.resultUrl);
+        }
         return current;
       });
     };
@@ -105,7 +110,10 @@ export function useToolBatch(): UseToolBatch {
   const removeItem = useCallback((id: string) => {
     setItems((current) => {
       const item = current.find((entry) => entry.id === id);
-      if (item) URL.revokeObjectURL(item.url);
+      if (item) {
+        URL.revokeObjectURL(item.url);
+        if (item.resultUrl) URL.revokeObjectURL(item.resultUrl);
+      }
       return current.filter((entry) => entry.id !== id);
     });
     setShowBatchWarning(false);
@@ -113,7 +121,10 @@ export function useToolBatch(): UseToolBatch {
 
   const clearAll = useCallback(() => {
     setItems((current) => {
-      for (const item of current) URL.revokeObjectURL(item.url);
+      for (const item of current) {
+        URL.revokeObjectURL(item.url);
+        if (item.resultUrl) URL.revokeObjectURL(item.resultUrl);
+      }
       return [];
     });
     setErrors([]);

@@ -143,5 +143,16 @@
     "result": "New",
     "saved": "{percent}% smaller",
     "cancel": "Cancel"
+  },
+  "compress": {
+    "process": "Compress all",
+    "quality": "Quality",
+    "targetLabel": "Make it under",
+    "targetUnit": "KB",
+    "format": "Output format",
+    "keepOriginal": "Same as original",
+    "targetNotReached": "Could not reach the target size — used the closest result instead.",
+    "compareBefore": "Before",
+    "compareAfter": "After"
   }
 }

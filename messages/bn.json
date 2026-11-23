@@ -143,5 +143,16 @@
     "result": "পরে",
     "saved": "{percent}% ছোট হয়েছে",
     "cancel": "বাতিল করুন"
+  },
+  "compress": {
+    "process": "সব কমপ্রেস করুন",
+    "quality": "কোয়ালিটি",
+    "targetLabel": "সাইজ আনুন এর নিচে",
+    "targetUnit": "KB",
+    "format": "আউটপুট ফরম্যাট",
+    "keepOriginal": "আগের ফরম্যাটই থাকবে",
+    "targetNotReached": "টার্গেট সাইজে আনা গেল না — সবচেয়ে কাছাকাছি রেজাল্ট ব্যবহার করা হয়েছে।",
+    "compareBefore": "আগে",
+    "compareAfter": "পরে"
   }
 }

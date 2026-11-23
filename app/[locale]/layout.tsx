@@ -31,7 +31,7 @@ const THEME_SCRIPT = `(function(){try{if(localStorage.getItem('chobikit-theme')=
 
 export async function generateMetadata({
   params,
-}: PageProps<"/[locale]">): Promise<Metadata> {
+}: LayoutProps<"/[locale]">): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "meta" });
   return {

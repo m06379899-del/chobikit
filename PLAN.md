@@ -12,8 +12,7 @@ Owner document: chobikit-master-prompt.md (sections 12). One milestone at a time
   - About / Privacy / Terms / Contact pages
   - CLAUDE.md, PLAN.md
 - [x] **Milestone 2 — Shared tool engine** (done 2026-11-23): drop zone, file list, image card, Web Worker messaging helper (protocol + WorkerClient), ZIP download (fflate), error handling, batch warning, device-class detection
-- [ ] **Milestone 3 — Image Compressor**: jSquash codecs, quality slider, target-size mode,
-  size stats, before/after slider, ZIP
+- [x] **Milestone 3 — Image Compressor** (done 2026-11-23): jSquash codecs (MozJPEG/WebP/AVIF/PNG) in Web Worker, quality slider, target-size binary search, size stats, before/after slider, ZIP. Build switched to webpack (turbopack hangs on wasm worker bundles).
 - [ ] `config/presets.ts` for resize presets and `config/seo-pages.ts` are Milestone 5 / 1b.
 - [ ] **Milestone 4 — Image Converter**: all formats incl. HEIC, transparency bg color,
   format support detection
