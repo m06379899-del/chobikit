@@ -46,7 +46,7 @@ export default function ImageCard({
   return (
     <div
       onClick={() => onSelect?.(item.id)}
-      className={`flex flex-col gap-3 rounded-2xl border bg-surface p-4 transition-colors ${
+      className={`ck-pop-in flex flex-col gap-3 rounded-2xl border bg-surface p-4 transition-colors ${
         selected ? "border-primary" : "border-border"
       } ${onSelect ? "cursor-pointer" : ""}`}
     >
@@ -82,7 +82,7 @@ export default function ImageCard({
           </p>
         </div>
         <span
-          className={`shrink-0 rounded-full px-3 py-1 text-xs font-bold ${STATUS_STYLES[item.status]}`}
+          className={`shrink-0 rounded-full px-3 py-1 text-xs font-bold ${STATUS_STYLES[item.status]} ${item.status === "processing" ? "ck-pulse" : ""}`}
         >
           {t(STATUS_KEYS[item.status])}
         </span>

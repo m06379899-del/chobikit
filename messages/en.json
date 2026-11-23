@@ -5,13 +5,7 @@
     "homeDescription": "Compress, convert and resize images right in your browser. Free, fast and private — your files never leave your device."
   },
   "header": {
-    "home": "Home",
-    "compress": "Compress",
-    "convert": "Convert",
-    "resize": "Resize",
-    "language": "Language",
-    "menu": "Menu",
-    "close": "Close"
+    "skipToContent": "Skip to content"
   },
   "theme": {
     "toLight": "Switch to light mode",
@@ -123,26 +117,7 @@
     "backHome": "Back to home"
   },
   "workbench": {
-    "dropTitle": "Drop images here or tap to choose",
-    "dropHint": "JPG, PNG, WebP, AVIF, GIF, BMP or HEIC — up to {count} images at once",
-    "dropActive": "Drop to add your images",
-    "fileTooLarge": "\"{name}\" is too large — the limit is {limit} MB",
-    "tooManyFiles": "You can process up to {count} images at once",
-    "unsupported": "\"{name}\" is not a supported image type",
-    "corrupt": "\"{name}\" looks damaged and cannot be read",
-    "memory": "This device is low on memory — try fewer or smaller images",
-    "batchWarning": "Large batch — this may be slow on your device",
-    "remove": "Remove",
-    "clearAll": "Clear all",
-    "downloadAll": "Download all (ZIP)",
-    "queued": "Waiting",
-    "processing": "Processing",
-    "done": "Done",
-    "error": "Failed",
-    "original": "Original",
-    "result": "New",
-    "saved": "{percent}% smaller",
-    "cancel": "Cancel"
+    "successLine": "🎉 Done — {percent}% smaller on average!"
   },
   "compress": {
     "process": "Compress all",
@@ -185,5 +160,70 @@
     "youtubeThumbnail": "YouTube thumbnail",
     "whatsappDp": "WhatsApp DP",
     "passport": "Passport photo"
+  },
+  "faq": {
+    "compress": {
+      "title": "How it works / FAQ",
+      "items": [
+        {
+          "question": "Are my images uploaded anywhere?",
+          "answer": "No. All compression happens inside your browser, on your own device. You can even turn off your internet after the page loads — the tool keeps working."
+        },
+        {
+          "question": "How much smaller will my images get?",
+          "answer": "It depends on each image. Photos often shrink 60–90% with little visible change. For an exact size, use the \"Make it under ___ KB\" target mode."
+        },
+        {
+          "question": "Will compression reduce the quality?",
+          "answer": "A little, depending on the quality slider. Around 80 the difference is usually invisible; lower values give smaller files with more visible loss."
+        },
+        {
+          "question": "Which formats can I compress?",
+          "answer": "JPG, PNG, WebP and AVIF output, plus HEIC (iPhone), GIF and BMP input. You can keep the original format or pick another one."
+        }
+      ]
+    },
+    "convert": {
+      "title": "How it works / FAQ",
+      "items": [
+        {
+          "question": "Are my images uploaded anywhere?",
+          "answer": "No. Conversion runs entirely in your browser. Nothing is sent to any server, and the tool even works offline once loaded."
+        },
+        {
+          "question": "Which formats can I convert between?",
+          "answer": "Output: JPG, PNG, WebP and AVIF. Input: JPG, PNG, WebP, AVIF, GIF (first frame), BMP and HEIC/HEIF photos from iPhone."
+        },
+        {
+          "question": "Why do I need a background color for JPG?",
+          "answer": "JPG cannot store transparency, so transparent areas need a color behind them. White is used by default — pick another color if you like."
+        },
+        {
+          "question": "What is HEIC?",
+          "answer": "The photo format iPhones use by default. Convert HEIC to JPG here to share it anywhere without extra apps."
+        }
+      ]
+    },
+    "resize": {
+      "title": "How it works / FAQ",
+      "items": [
+        {
+          "question": "Are my images uploaded anywhere?",
+          "answer": "No. Resizing happens on your own device, inside your browser. No uploads, no accounts."
+        },
+        {
+          "question": "What do Cover and Contain mean?",
+          "answer": "With a preset: Cover fills the size completely and crops the edges; Contain fits the whole image inside, which may leave empty space."
+        },
+        {
+          "question": "What does the lock button do?",
+          "answer": "It keeps the width-to-height ratio: change the width and the height follows automatically. Unlock to set them independently."
+        },
+        {
+          "question": "Why does the result have a size in its name?",
+          "answer": "So you can tell apart multiple resized copies, e.g. photo-800x600.jpg."
+        }
+      ]
+    }
   }
 }

@@ -11,6 +11,7 @@ import ResizeControls from "@/components/tools/resize-controls";
 import { useToolBatch } from "@/hooks/use-tool-batch";
 import { zipAndDownload } from "@/lib/image/zip";
 import { IMAGE_LIMITS } from "@/config/limits";
+import { fireConfetti } from "@/lib/confetti";
 import type { ToolId } from "@/lib/tools-registry";
 import { WorkerClient } from "@/workers/worker-client";
 import {
@@ -59,6 +60,7 @@ export default function ToolWorkbench({ toolId }: { toolId: ToolId }) {
   const [running, setRunning] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [lastTargetMissed, setLastTargetMissed] = useState(false);
+  const [summaryPercent, setSummaryPercent] = useState<number | null>(null);
 
   const clientRef = useRef<WorkerClient<CompressJob | ResizeJob, CompressOutcome> | null>(null);
   const cancelRequested = useRef(false);
@@ -98,6 +100,9 @@ export default function ToolWorkbench({ toolId }: { toolId: ToolId }) {
     setRunning(true);
     setLastTargetMissed(false);
     let targetMissed = false;
+    let doneCount = 0;
+    let originalTotal = 0;
+    let resultTotal = 0;
 
     for (const item of batch.items) {
       if (cancelRequested.current) break;
@@ -157,6 +162,9 @@ export default function ToolWorkbench({ toolId }: { toolId: ToolId }) {
         const outcome = await client.run(job);
         if (outcome.targetReached === false) targetMissed = true;
         const blob = new Blob([outcome.bytes], { type: FORMAT_MIME[format] });
+        doneCount++;
+        originalTotal += item.file.size;
+        resultTotal += blob.size;
         if (item.resultUrl) URL.revokeObjectURL(item.resultUrl);
         batch.updateItem(item.id, {
           status: "done",
@@ -180,6 +188,12 @@ export default function ToolWorkbench({ toolId }: { toolId: ToolId }) {
       }
     }
 
+    if (doneCount > 0 && originalTotal > resultTotal) {
+      setSummaryPercent(Math.round((1 - resultTotal / originalTotal) * 100));
+      fireConfetti();
+    } else {
+      setSummaryPercent(null);
+    }
     setLastTargetMissed(targetMissed);
     setRunning(false);
   }
@@ -225,6 +239,15 @@ export default function ToolWorkbench({ toolId }: { toolId: ToolId }) {
 
       {batch.items.length > 0 && (
         <>
+          {summaryPercent !== null && !running && (
+            <p
+              role="status"
+              className="rounded-2xl border border-success/40 bg-success/10 p-4 text-sm font-bold text-success"
+            >
+              {t("successLine", { percent: summaryPercent })}
+            </p>
+          )}
+
           {lastTargetMissed && (
             <p
               role="status"

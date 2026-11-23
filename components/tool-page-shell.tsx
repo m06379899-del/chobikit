@@ -3,6 +3,7 @@ import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { TOOLS, accentColor, getTool, type ToolId } from "@/lib/tools-registry";
 import PrivacyBadge from "@/components/privacy-badge";
+import FaqSection from "@/components/faq-section";
 
 /**
  * Shared layout for all tool pages: title, tabs between tools, privacy
@@ -79,6 +80,8 @@ export default async function ToolPageShell({
           {tCommon("comingSoon")}
         </div>
       )}
+
+      <FaqSection toolId={toolId} />
     </div>
   );
 }

@@ -60,7 +60,7 @@ export default async function LocaleLayout({
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
         <NextIntlClientProvider>
           <Header />
-          <main className="flex-1">{children}</main>
+          <main id="main" className="flex-1">{children}</main>
           <Footer />
         </NextIntlClientProvider>
       </body>

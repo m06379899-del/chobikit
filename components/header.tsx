@@ -18,6 +18,12 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-bg/90 backdrop-blur">
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-2 focus:top-2 focus:z-50 focus:rounded-lg focus:bg-primary focus:px-3 focus:py-2 focus:text-on-primary"
+      >
+        {t("skipToContent")}
+      </a>
       <div className="mx-auto flex h-16 max-w-5xl items-center justify-between gap-2 px-4">
         <Link
           href="/"
