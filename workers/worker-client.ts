@@ -37,7 +37,8 @@ export class WorkerClient<TJob, TResult> {
     };
     this.worker.onerror = (event) => {
       // Worker-level failure (crash, OOM): reject everything pending.
-      const error = new Error(event.message || "worker crashed");
+      console.error("Worker error event:", event);
+      const error = new Error(event.message || "unknown: worker failed to load or crashed");
       for (const [, job] of this.pending) job.reject(error);
       this.pending.clear();
     };

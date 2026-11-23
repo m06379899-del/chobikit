@@ -187,6 +187,7 @@ export default function ToolWorkbench({ toolId }: { toolId: ToolId }) {
           resultUrl: URL.createObjectURL(blob),
         });
       } catch (error) {
+        console.error(`Processing failed for ${item.file.name}:`, error);
         const code = error instanceof Error ? error.message.split(":")[0] : "unknown";
         batch.updateItem(item.id, {
           status: "error",

@@ -106,7 +106,8 @@
     "result": "New",
     "saved": "{percent}% smaller",
     "cancel": "Cancel",
-    "successLine": "🎉 Done — {percent}% smaller on average!"
+    "successLine": "🎉 Done — {percent}% smaller on average!",
+    "errorGeneric": "Something went wrong while processing this image"
   },
   "compress": {
     "process": "Compress all",
