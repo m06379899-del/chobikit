@@ -108,7 +108,10 @@
     "cancel": "বাতিল করুন",
     "successLine": "🎉 হয়ে গেছে — গড়ে {percent}% ছোট হয়েছে!",
     "errorGeneric": "এই ছবিটা প্রসেস করতে সমস্যা হয়েছে",
-    "download": "ডাউনলোড"
+    "download": "ডাউনলোড",
+    "batchSettings": "একসাথে অনেক ছবিতে প্রয়োগ করুন",
+    "selectAll": "সব বাছাই করুন",
+    "applyToSelected": "{count}টি বাছাই করা ছবিতে প্রয়োগ করুন"
   },
   "compress": {
     "process": "সব কমপ্রেস করুন",

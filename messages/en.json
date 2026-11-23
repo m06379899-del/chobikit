@@ -108,7 +108,10 @@
     "cancel": "Cancel",
     "successLine": "🎉 Done — {percent}% smaller on average!",
     "errorGeneric": "Something went wrong while processing this image",
-    "download": "Download"
+    "download": "Download",
+    "batchSettings": "Apply to many images at once",
+    "selectAll": "Select all",
+    "applyToSelected": "Apply to {count} selected"
   },
   "compress": {
     "process": "Compress all",

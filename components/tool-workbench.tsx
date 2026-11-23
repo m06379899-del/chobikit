@@ -57,6 +57,9 @@ export default function ToolWorkbench({ toolId }: { toolId: ToolId }) {
 
   const [settings, setSettings] = useState<Record<string, CompressSettings | ConvertSettings>>({});
   const [resizeSettings, setResizeSettings] = useState<ResizeSettings>(DEFAULT_RESIZE_SETTINGS);
+  const [checkedIds, setCheckedIds] = useState<Set<string>>(new Set());
+  const [globalCompress, setGlobalCompress] = useState<CompressSettings>(DEFAULT_COMPRESS_SETTINGS);
+  const [globalConvert, setGlobalConvert] = useState<ConvertSettings>(DEFAULT_CONVERT_SETTINGS);
   const [running, setRunning] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [lastTargetMissed, setLastTargetMissed] = useState(false);
@@ -84,6 +87,33 @@ export default function ToolWorkbench({ toolId }: { toolId: ToolId }) {
     }
     return clientRef.current;
   }, []);
+
+  function toggleAll() {
+    setCheckedIds((current) =>
+      current.size === batch.items.length
+        ? new Set<string>()
+        : new Set(batch.items.map((item) => item.id)),
+    );
+  }
+
+  function toggleOne(id: string) {
+    setCheckedIds((current) => {
+      const next = new Set(current);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }
+
+  function applyToSelected() {
+    if (checkedIds.size === 0) return;
+    const shared = toolId === "convert" ? globalConvert : globalCompress;
+    setSettings((current) => {
+      const next = { ...current };
+      for (const id of checkedIds) next[id] = { ...shared };
+      return next;
+    });
+  }
 
   function handleAddFiles(files: File[]) {
     setSummaryPercent(null);
@@ -272,6 +302,35 @@ export default function ToolWorkbench({ toolId }: { toolId: ToolId }) {
             <ResizeControls settings={resizeSettings} onChange={setResizeSettings} />
           )}
 
+          {(toolId === "compress" || toolId === "convert") && batch.items.length > 0 && (
+            <div className="flex flex-col gap-3 rounded-2xl border border-border bg-surface-2 p-4">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <label className="flex cursor-pointer items-center gap-2 text-sm font-bold text-text">
+                  <input
+                    type="checkbox"
+                    checked={batch.items.length > 0 && checkedIds.size === batch.items.length}
+                    onChange={toggleAll}
+                    className="h-5 w-5 accent-primary"
+                  />
+                  {t("selectAll")}
+                </label>
+                <button
+                  type="button"
+                  onClick={applyToSelected}
+                  disabled={checkedIds.size === 0}
+                  className="rounded-xl bg-primary px-4 py-2.5 text-sm font-bold text-on-primary transition-colors hover:bg-primary-strong disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  {t("applyToSelected", { count: checkedIds.size })}
+                </button>
+              </div>
+              <p className="text-xs text-muted">{t("batchSettings")}</p>
+              {toolId === "compress" ? (
+                <CompressControls settings={globalCompress} onChange={setGlobalCompress} />
+              ) : (
+                <ConvertControls settings={globalConvert} onChange={setGlobalConvert} />
+              )}
+            </div>
+          )}
           {toolId !== "resize" && selected?.resultUrl && selected.result && (
             <CompareSlider
               beforeUrl={selected.url}
@@ -288,6 +347,9 @@ export default function ToolWorkbench({ toolId }: { toolId: ToolId }) {
                 key={item.id}
                 item={item}
                 onRemove={batch.removeItem}
+                showCheckbox={toolId !== "resize"}
+                checkboxChecked={checkedIds.has(item.id)}
+                onCheckboxChange={toggleOne}
                 onDownload={
                   true ?
                     (id: string) => {

@@ -25,6 +25,9 @@ export default function ImageCard({
   onRemove,
   onDownload,
   onSelect,
+  showCheckbox,
+  checkboxChecked,
+  onCheckboxChange,
   selected,
   errorKeys,
   children,
@@ -33,6 +36,9 @@ export default function ImageCard({
   onRemove: (id: string) => void;
   onDownload?: (id: string) => void;
   onSelect?: (id: string) => void;
+  showCheckbox?: boolean;
+  checkboxChecked?: boolean;
+  onCheckboxChange?: (id: string) => void;
   selected?: boolean;
   /** Translation keys for item-level errors, looked up from workbench ns. */
   errorKeys?: Record<string, "corrupt" | "memory" | "errorGeneric">;
@@ -59,6 +65,16 @@ export default function ImageCard({
           alt={item.file.name}
           className="h-14 w-14 shrink-0 rounded-xl border border-border object-cover"
         />
+        {showCheckbox && (
+          <input
+            type="checkbox"
+            checked={checkboxChecked ?? false}
+            onClick={(event) => event.stopPropagation()}
+            onChange={() => onCheckboxChange?.(item.id)}
+            aria-label={item.file.name}
+            className="h-5 w-5 shrink-0 accent-primary"
+          />
+        )}
         <div className="min-w-0 flex-1">
           <p className="truncate text-sm font-bold text-text">{item.file.name}</p>
           <p className="text-sm text-muted">
