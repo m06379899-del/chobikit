@@ -6,6 +6,7 @@ import DropZone from "@/components/drop-zone";
 import ImageCard from "@/components/image-card";
 import CompareSlider from "@/components/compare-slider";
 import CompressControls from "@/components/tools/compress-controls";
+import ConvertControls from "@/components/tools/convert-controls";
 import { useToolBatch } from "@/hooks/use-tool-batch";
 import { zipAndDownload } from "@/lib/image/zip";
 import { IMAGE_LIMITS } from "@/config/limits";
@@ -20,6 +21,13 @@ import {
   type CompressOutcome,
   type CompressSettings,
 } from "@/lib/image/compress";
+import {
+  DEFAULT_CONVERT_SETTINGS,
+  decodeHeic,
+  hexToRgb,
+  isHeic,
+  type ConvertSettings,
+} from "@/lib/image/convert";
 
 const ERROR_KEYS: Record<string, "corrupt" | "memory" | "errorGeneric"> = {
   corrupt: "corrupt",
@@ -35,9 +43,10 @@ const ERROR_KEYS: Record<string, "corrupt" | "memory" | "errorGeneric"> = {
 export default function ToolWorkbench({ toolId }: { toolId: ToolId }) {
   const t = useTranslations("workbench");
   const tCompress = useTranslations("compress");
+  const tConvert = useTranslations("convert");
   const batch = useToolBatch();
 
-  const [settings, setSettings] = useState<Record<string, CompressSettings>>({});
+  const [settings, setSettings] = useState<Record<string, CompressSettings | ConvertSettings>>({});
   const [running, setRunning] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [lastTargetMissed, setLastTargetMissed] = useState(false);
@@ -64,11 +73,12 @@ export default function ToolWorkbench({ toolId }: { toolId: ToolId }) {
     return clientRef.current;
   }, []);
 
-  function getSettings(id: string): CompressSettings {
+  function getSettings(id: string): CompressSettings | ConvertSettings {
+    if (toolId === "convert") return settings[id] ?? DEFAULT_CONVERT_SETTINGS;
     return settings[id] ?? DEFAULT_COMPRESS_SETTINGS;
   }
 
-  function updateSettings(id: string, next: CompressSettings) {
+  function updateSettings(id: string, next: CompressSettings | ConvertSettings) {
     setSettings((current) => ({ ...current, [id]: next }));
   }
 
@@ -84,20 +94,35 @@ export default function ToolWorkbench({ toolId }: { toolId: ToolId }) {
       if (cancelRequested.current) break;
       batch.updateItem(item.id, { status: "processing", errorKey: undefined });
       try {
+        // iPhone HEIC photos decode via heic2any on the main thread first.
+        const source: Blob = isHeic(item.file) ? await decodeHeic(item.file) : item.file;
         // from-image applies EXIF orientation so photos come out upright.
-        const bitmap = await createImageBitmap(item.file, {
+        const bitmap = await createImageBitmap(source, {
           imageOrientation: "from-image",
         });
-        const compressSettings = getSettings(item.id);
-        const format = resolveFormat(item.file, compressSettings.format);
+        const toolSettings = getSettings(item.id);
+        const isConvert = toolId === "convert";
+        const format = isConvert
+          ? (toolSettings as ConvertSettings).format
+          : resolveFormat(item.file, (toolSettings as CompressSettings).format);
+        const quality = isConvert
+          ? (toolSettings as ConvertSettings).quality
+          : (toolSettings as CompressSettings).quality;
+        const targetBytes =
+          isConvert || !(toolSettings as CompressSettings).targetMode
+            ? undefined
+            : (toolSettings as CompressSettings).targetKB * 1024;
+        const backgroundColor =
+          isConvert && format === "jpeg"
+            ? hexToRgb((toolSettings as ConvertSettings).bgColor)
+            : undefined;
         const outcome = await client.run({
           kind: "compress",
           bitmap,
           format,
-          quality: compressSettings.quality,
-          targetBytes: compressSettings.targetMode
-            ? compressSettings.targetKB * 1024
-            : undefined,
+          quality,
+          targetBytes,
+          backgroundColor,
         });
         if (outcome.targetReached === false) targetMissed = true;
         const blob = new Blob([outcome.bytes], { type: FORMAT_MIME[format] });
@@ -175,7 +200,7 @@ export default function ToolWorkbench({ toolId }: { toolId: ToolId }) {
             </p>
           )}
 
-          {toolId === "compress" && selected?.resultUrl && selected.result && (
+          {toolId !== "resize" && selected?.resultUrl && selected.result && (
             <CompareSlider
               beforeUrl={selected.url}
               afterUrl={selected.resultUrl}
@@ -191,12 +216,18 @@ export default function ToolWorkbench({ toolId }: { toolId: ToolId }) {
                 key={item.id}
                 item={item}
                 onRemove={batch.removeItem}
-                onSelect={toolId === "compress" ? setSelectedId : undefined}
+                onSelect={toolId !== "resize" ? setSelectedId : undefined}
                 selected={item.id === selectedId}
               >
                 {toolId === "compress" && (
                   <CompressControls
-                    settings={getSettings(item.id)}
+                    settings={getSettings(item.id) as CompressSettings}
+                    onChange={(next) => updateSettings(item.id, next)}
+                  />
+                )}
+                {toolId === "convert" && (
+                  <ConvertControls
+                    settings={getSettings(item.id) as ConvertSettings}
                     onChange={(next) => updateSettings(item.id, next)}
                   />
                 )}
@@ -214,14 +245,14 @@ export default function ToolWorkbench({ toolId }: { toolId: ToolId }) {
                 {t("cancel")}
               </button>
             ) : (
-              toolId === "compress" && (
+              (toolId === "compress" || toolId === "convert") && (
                 <button
                   type="button"
                   onClick={() => void processAll()}
                   className="flex-1 rounded-xl px-4 py-3 text-sm font-bold text-on-primary"
-                  style={{ backgroundColor: "var(--ck-accent-compress)" }}
+                  style={{ backgroundColor: `var(--ck-accent-${toolId})` }}
                 >
-                  {tCompress("process")}
+                  {toolId === "convert" ? tConvert("process") : tCompress("process")}
                 </button>
               )
             )}

@@ -154,5 +154,12 @@
     "targetNotReached": "টার্গেট সাইজে আনা গেল না — সবচেয়ে কাছাকাছি রেজাল্ট ব্যবহার করা হয়েছে।",
     "compareBefore": "আগে",
     "compareAfter": "পরে"
+  },
+  "convert": {
+    "process": "সব কনভার্ট করুন",
+    "quality": "কোয়ালিটি",
+    "format": "আউটপুট ফরম্যাট",
+    "backgroundColor": "ব্যাকগ্রাউন্ড রঙ",
+    "backgroundColorHint": "ছবির স্বচ্ছ জায়গায় এই রঙ বসবে"
   }
 }

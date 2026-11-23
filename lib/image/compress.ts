@@ -55,6 +55,8 @@ export interface CompressJob {
   quality: number;
   /** When set, the worker binary-searches quality to fit under this size. */
   targetBytes?: number;
+  /** Flattened behind transparency before encoding (used for JPEG output). */
+  backgroundColor?: [number, number, number];
 }
 
 export interface CompressOutcome {

@@ -154,5 +154,12 @@
     "targetNotReached": "Could not reach the target size — used the closest result instead.",
     "compareBefore": "Before",
     "compareAfter": "After"
+  },
+  "convert": {
+    "process": "Convert all",
+    "quality": "Quality",
+    "format": "Output format",
+    "backgroundColor": "Background color",
+    "backgroundColorHint": "Used where the image is transparent"
   }
 }

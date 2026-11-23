@@ -24,6 +24,17 @@ function bitmapToImageData(bitmap: ImageBitmap): ImageData {
   return ctx.getImageData(0, 0, bitmap.width, bitmap.height);
 }
 
+function flattenAlpha(imageData: ImageData, bg: [number, number, number]): void {
+  const px = imageData.data;
+  for (let i = 0; i < px.length; i += 4) {
+    const a = px[i + 3] / 255;
+    px[i] = Math.round(px[i] * a + bg[0] * (1 - a));
+    px[i + 1] = Math.round(px[i + 1] * a + bg[1] * (1 - a));
+    px[i + 2] = Math.round(px[i + 2] * a + bg[2] * (1 - a));
+    px[i + 3] = 255;
+  }
+}
+
 async function encodeFormat(
   format: EncodeFormat,
   imageData: ImageData,
@@ -54,6 +65,7 @@ const SEARCH_STEPS = 7;
 async function runCompress(job: CompressJob, id: string): Promise<void> {
   try {
     const imageData = bitmapToImageData(job.bitmap);
+    if (job.backgroundColor) flattenAlpha(imageData, job.backgroundColor);
 
     if (job.targetBytes === undefined) {
       const bytes = await encodeFormat(job.format, imageData, job.quality);
