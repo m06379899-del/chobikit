@@ -5,6 +5,13 @@
     "homeDescription": "Compress, convert and resize images right in your browser. Free, fast and private — your files never leave your device."
   },
   "header": {
+    "home": "Home",
+    "compress": "Compress",
+    "convert": "Convert",
+    "resize": "Resize",
+    "language": "Language",
+    "menu": "Menu",
+    "close": "Close",
     "skipToContent": "Skip to content"
   },
   "theme": {
@@ -73,50 +80,32 @@
     "contact": "Contact",
     "copyright": "© {year} ChobiKit. Free image tools that respect your privacy."
   },
-  "pages": {
-    "about": {
-      "title": "About ChobiKit",
-      "body": [
-        "ChobiKit (\"chobi\" means picture in Bengali) is a collection of free image tools that run entirely in your own browser. There is no server doing the work — when you compress, convert or resize a photo, your own phone or computer does it, using the same technology that renders web pages.",
-        "We built ChobiKit because most online image tools upload your photos to a server first. That is slow, it eats your mobile data, and it means your private photos pass through someone else's computer. ChobiKit works the opposite way: the tool comes to you, and your files stay with you.",
-        "ChobiKit is made for everyone, with special care for users in Bangladesh and India — it is fully translated into Bengali, works well on mid-range phones, and costs nothing."
-      ]
-    },
-    "privacy": {
-      "title": "Privacy",
-      "body": [
-        "The short version: your images never leave your device.",
-        "When you use any ChobiKit tool, your files are processed locally by your own browser. No image, video or file content is ever uploaded, stored or sent to us or to anyone else. The tools even keep working if you go offline after the page has loaded.",
-        "We do not use accounts, cookies, or tracking that identifies you. We do not collect your files, your names, or your email addresses.",
-        "If analytics are enabled on this site, they use a privacy-friendly, cookie-free service that only records anonymous page-view counts — never file names, file contents, or anything you do inside a tool. Analytics can be switched off entirely.",
-        "In short: what happens on your device stays on your device."
-      ]
-    },
-    "terms": {
-      "title": "Terms of Use",
-      "body": [
-        "ChobiKit is provided free of charge, for anyone to use, as it is. There are no accounts and no agreements to sign.",
-        "The tools run on your own device and depend on your device's browser, memory and speed. Results may vary between devices and browsers, and very large files may fail on devices with limited memory. Please keep backups of anything important — you are responsible for your own files.",
-        "The site is offered without any warranty. To the fullest extent permitted by law, the ChobiKit team is not liable for any loss or damage resulting from the use of the site or its tools.",
-        "You agree not to use ChobiKit for anything unlawful, and not to attempt to interfere with the site's operation.",
-        "These terms may be updated from time to time; the latest version will always be on this page."
-      ]
-    },
-    "contact": {
-      "title": "Contact",
-      "body": [
-        "Found a bug, or want to suggest a tool? We would love to hear from you.",
-        "The easiest way to reach us is by email:"
-      ],
-      "emailLabel": "Email us at"
-    }
-  },
   "notFound": {
     "title": "Page not found",
     "text": "The page you are looking for does not exist or has moved.",
     "backHome": "Back to home"
   },
   "workbench": {
+    "dropTitle": "Drop images here or tap to choose",
+    "dropHint": "JPG, PNG, WebP, AVIF, GIF, BMP or HEIC — up to {count} images at once",
+    "dropActive": "Drop to add your images",
+    "fileTooLarge": "\"{name}\" is too large — the limit is {limit} MB",
+    "tooManyFiles": "You can process up to {count} images at once",
+    "unsupported": "\"{name}\" is not a supported image type",
+    "corrupt": "\"{name}\" looks damaged and cannot be read",
+    "memory": "This device is low on memory — try fewer or smaller images",
+    "batchWarning": "Large batch — this may be slow on your device",
+    "remove": "Remove",
+    "clearAll": "Clear all",
+    "downloadAll": "Download all (ZIP)",
+    "queued": "Waiting",
+    "processing": "Processing",
+    "done": "Done",
+    "error": "Failed",
+    "original": "Original",
+    "result": "New",
+    "saved": "{percent}% smaller",
+    "cancel": "Cancel",
     "successLine": "🎉 Done — {percent}% smaller on average!"
   },
   "compress": {
@@ -160,6 +149,44 @@
     "youtubeThumbnail": "YouTube thumbnail",
     "whatsappDp": "WhatsApp DP",
     "passport": "Passport photo"
+  },
+  "pages": {
+    "about": {
+      "title": "About ChobiKit",
+      "body": [
+        "ChobiKit (\"chobi\" means picture in Bengali) is a collection of free image tools that run entirely in your own browser. There is no server doing the work — when you compress, convert or resize a photo, your own phone or computer does it, using the same technology that renders web pages.",
+        "We built ChobiKit because most online image tools upload your photos to a server first. That is slow, it eats your mobile data, and it means your private photos pass through someone else's computer. ChobiKit works the opposite way: the tool comes to you, and your files stay with you.",
+        "ChobiKit is made for everyone, with special care for users in Bangladesh and India — it is fully translated into Bengali, works well on mid-range phones, and costs nothing."
+      ]
+    },
+    "privacy": {
+      "title": "Privacy",
+      "body": [
+        "The short version: your images never leave your device.",
+        "When you use any ChobiKit tool, your files are processed locally by your own browser. No image, video or file content is ever uploaded, stored or sent to us or to anyone else. The tools even keep working if you go offline after the page has loaded.",
+        "We do not use accounts, cookies, or tracking that identifies you. We do not collect your files, your names, or your email addresses.",
+        "If analytics are enabled on this site, they use a privacy-friendly, cookie-free service that only records anonymous page-view counts — never file names, file contents, or anything you do inside a tool. Analytics can be switched off entirely.",
+        "In short: what happens on your device stays on your device."
+      ]
+    },
+    "terms": {
+      "title": "Terms of Use",
+      "body": [
+        "ChobiKit is provided free of charge, for anyone to use, as it is. There are no accounts and no agreements to sign.",
+        "The tools run on your own device and depend on your device's browser, memory and speed. Results may vary between devices and browsers, and very large files may fail on devices with limited memory. Please keep backups of anything important — you are responsible for your own files.",
+        "The site is offered without any warranty. To the fullest extent permitted by law, the ChobiKit team is not liable for any loss or damage resulting from the use of the site or its tools.",
+        "You agree not to use ChobiKit for anything unlawful, and not to attempt to interfere with the site's operation.",
+        "These terms may be updated from time to time; the latest version will always be on this page."
+      ]
+    },
+    "contact": {
+      "title": "Contact",
+      "body": [
+        "Found a bug, or want to suggest a tool? We would love to hear from you.",
+        "The easiest way to reach us is by email:"
+      ],
+      "emailLabel": "Email us at"
+    }
   },
   "faq": {
     "compress": {
