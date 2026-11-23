@@ -23,6 +23,7 @@ const STATUS_KEYS = {
 export default function ImageCard({
   item,
   onRemove,
+  onDownload,
   onSelect,
   selected,
   errorKeys,
@@ -30,6 +31,7 @@ export default function ImageCard({
 }: {
   item: BatchItem;
   onRemove: (id: string) => void;
+  onDownload?: (id: string) => void;
   onSelect?: (id: string) => void;
   selected?: boolean;
   /** Translation keys for item-level errors, looked up from workbench ns. */
@@ -86,6 +88,19 @@ export default function ImageCard({
         >
           {t(STATUS_KEYS[item.status])}
         </span>
+        {item.result && onDownload && (
+          <button
+            type="button"
+            onClick={(event) => {
+              event.stopPropagation();
+              onDownload(item.id);
+            }}
+            aria-label={t("download") + ": " + item.result.name}
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-muted transition-colors hover:bg-surface-2 hover:text-text"
+          >
+            <span aria-hidden="true">⬇</span>
+          </button>
+        )}
         <button
           type="button"
           onClick={(event) => {

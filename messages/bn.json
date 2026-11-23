@@ -107,7 +107,8 @@
     "saved": "{percent}% ছোট হয়েছে",
     "cancel": "বাতিল করুন",
     "successLine": "🎉 হয়ে গেছে — গড়ে {percent}% ছোট হয়েছে!",
-    "errorGeneric": "এই ছবিটা প্রসেস করতে সমস্যা হয়েছে"
+    "errorGeneric": "এই ছবিটা প্রসেস করতে সমস্যা হয়েছে",
+    "download": "ডাউনলোড"
   },
   "compress": {
     "process": "সব কমপ্রেস করুন",

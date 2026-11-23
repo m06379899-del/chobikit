@@ -9,7 +9,7 @@ import CompressControls from "@/components/tools/compress-controls";
 import ConvertControls from "@/components/tools/convert-controls";
 import ResizeControls from "@/components/tools/resize-controls";
 import { useToolBatch } from "@/hooks/use-tool-batch";
-import { zipAndDownload } from "@/lib/image/zip";
+import { downloadBlob, zipAndDownload } from "@/lib/image/zip";
 import { IMAGE_LIMITS } from "@/config/limits";
 import { fireConfetti } from "@/lib/confetti";
 import type { ToolId } from "@/lib/tools-registry";
@@ -288,6 +288,14 @@ export default function ToolWorkbench({ toolId }: { toolId: ToolId }) {
                 key={item.id}
                 item={item}
                 onRemove={batch.removeItem}
+                onDownload={
+                  true ?
+                    (id: string) => {
+                        const item = batch.items.find((entry) => entry.id === id);
+                        if (item?.result) downloadBlob(item.result.blob, item.result.name);
+                      }
+                    : undefined
+                }
                 onSelect={toolId !== "resize" ? setSelectedId : undefined}
                 selected={item.id === selectedId}
               >

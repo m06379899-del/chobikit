@@ -107,7 +107,8 @@
     "saved": "{percent}% smaller",
     "cancel": "Cancel",
     "successLine": "🎉 Done — {percent}% smaller on average!",
-    "errorGeneric": "Something went wrong while processing this image"
+    "errorGeneric": "Something went wrong while processing this image",
+    "download": "Download"
   },
   "compress": {
     "process": "Compress all",
