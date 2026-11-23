@@ -117,12 +117,15 @@ function flattenAlpha(imageData: ImageData, bg: [number, number, number]): void 
 }
 
 function bitmapToImageData(bitmap: ImageBitmap): ImageData {
-  const canvas = new OffscreenCanvas(bitmap.width, bitmap.height);
+  // Capture dimensions BEFORE closing: a closed ImageBitmap reports width 0.
+  const width = bitmap.width;
+  const height = bitmap.height;
+  const canvas = new OffscreenCanvas(width, height);
   const ctx = canvas.getContext("2d");
   if (!ctx) throw new Error("unknown: OffscreenCanvas 2D context unavailable");
   ctx.drawImage(bitmap, 0, 0);
   bitmap.close();
-  return ctx.getImageData(0, 0, bitmap.width, bitmap.height);
+  return ctx.getImageData(0, 0, width, height);
 }
 
 const cancelled = new Set<string>();
