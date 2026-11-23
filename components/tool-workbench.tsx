@@ -7,6 +7,7 @@ import ImageCard from "@/components/image-card";
 import CompareSlider from "@/components/compare-slider";
 import CompressControls from "@/components/tools/compress-controls";
 import ConvertControls from "@/components/tools/convert-controls";
+import ResizeControls from "@/components/tools/resize-controls";
 import { useToolBatch } from "@/hooks/use-tool-batch";
 import { zipAndDownload } from "@/lib/image/zip";
 import { IMAGE_LIMITS } from "@/config/limits";
@@ -28,6 +29,12 @@ import {
   isHeic,
   type ConvertSettings,
 } from "@/lib/image/convert";
+import {
+  DEFAULT_RESIZE_SETTINGS,
+  resizeOutputName,
+  type ResizeJob,
+  type ResizeSettings,
+} from "@/lib/image/resize";
 
 const ERROR_KEYS: Record<string, "corrupt" | "memory" | "errorGeneric"> = {
   corrupt: "corrupt",
@@ -44,14 +51,16 @@ export default function ToolWorkbench({ toolId }: { toolId: ToolId }) {
   const t = useTranslations("workbench");
   const tCompress = useTranslations("compress");
   const tConvert = useTranslations("convert");
+  const tResize = useTranslations("resize");
   const batch = useToolBatch();
 
   const [settings, setSettings] = useState<Record<string, CompressSettings | ConvertSettings>>({});
+  const [resizeSettings, setResizeSettings] = useState<ResizeSettings>(DEFAULT_RESIZE_SETTINGS);
   const [running, setRunning] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [lastTargetMissed, setLastTargetMissed] = useState(false);
 
-  const clientRef = useRef<WorkerClient<CompressJob, CompressOutcome> | null>(null);
+  const clientRef = useRef<WorkerClient<CompressJob | ResizeJob, CompressOutcome> | null>(null);
   const cancelRequested = useRef(false);
 
   useEffect(() => {
@@ -100,30 +109,52 @@ export default function ToolWorkbench({ toolId }: { toolId: ToolId }) {
         const bitmap = await createImageBitmap(source, {
           imageOrientation: "from-image",
         });
-        const toolSettings = getSettings(item.id);
-        const isConvert = toolId === "convert";
-        const format = isConvert
-          ? (toolSettings as ConvertSettings).format
-          : resolveFormat(item.file, (toolSettings as CompressSettings).format);
-        const quality = isConvert
-          ? (toolSettings as ConvertSettings).quality
-          : (toolSettings as CompressSettings).quality;
-        const targetBytes =
-          isConvert || !(toolSettings as CompressSettings).targetMode
-            ? undefined
-            : (toolSettings as CompressSettings).targetKB * 1024;
-        const backgroundColor =
-          isConvert && format === "jpeg"
-            ? hexToRgb((toolSettings as ConvertSettings).bgColor)
-            : undefined;
-        const outcome = await client.run({
-          kind: "compress",
-          bitmap,
-          format,
-          quality,
-          targetBytes,
-          backgroundColor,
-        });
+        let job: CompressJob | ResizeJob;
+        let format: ReturnType<typeof resolveFormat>;
+        if (toolId === "resize") {
+          const rs = resizeSettings;
+          format = resolveFormat(item.file, rs.format);
+          job = {
+            kind: "resize",
+            bitmap,
+            width: rs.mode === "dimensions" ? rs.width : undefined,
+            height: rs.mode === "dimensions" ? rs.height : undefined,
+            lockAspect: rs.mode === "dimensions" ? rs.lockAspect : undefined,
+            percent: rs.mode === "percent" ? rs.percent : undefined,
+            fit: rs.presetId ? rs.fit : undefined,
+            format,
+            quality: rs.quality,
+            // JPEG has no alpha; letterboxed contain output flattens to white.
+            backgroundColor:
+              format === "jpeg" ? ([255, 255, 255] as [number, number, number]) : undefined,
+          };
+        } else {
+          const toolSettings = getSettings(item.id);
+          const isConvert = toolId === "convert";
+          format = isConvert
+            ? (toolSettings as ConvertSettings).format
+            : resolveFormat(item.file, (toolSettings as CompressSettings).format);
+          const quality = isConvert
+            ? (toolSettings as ConvertSettings).quality
+            : (toolSettings as CompressSettings).quality;
+          const targetBytes =
+            isConvert || !(toolSettings as CompressSettings).targetMode
+              ? undefined
+              : (toolSettings as CompressSettings).targetKB * 1024;
+          const backgroundColor =
+            isConvert && format === "jpeg"
+              ? hexToRgb((toolSettings as ConvertSettings).bgColor)
+              : undefined;
+          job = {
+            kind: "compress",
+            bitmap,
+            format,
+            quality,
+            targetBytes,
+            backgroundColor,
+          };
+        }
+        const outcome = await client.run(job);
         if (outcome.targetReached === false) targetMissed = true;
         const blob = new Blob([outcome.bytes], { type: FORMAT_MIME[format] });
         if (item.resultUrl) URL.revokeObjectURL(item.resultUrl);
@@ -132,7 +163,10 @@ export default function ToolWorkbench({ toolId }: { toolId: ToolId }) {
           errorKey: undefined,
           result: {
             blob,
-            name: outputName(item.file, format),
+            name:
+              toolId === "resize"
+                ? resizeOutputName(item.file, format, outcome.width, outcome.height)
+                : outputName(item.file, format),
             size: blob.size,
           },
           resultUrl: URL.createObjectURL(blob),
@@ -200,6 +234,10 @@ export default function ToolWorkbench({ toolId }: { toolId: ToolId }) {
             </p>
           )}
 
+          {toolId === "resize" && (
+            <ResizeControls settings={resizeSettings} onChange={setResizeSettings} />
+          )}
+
           {toolId !== "resize" && selected?.resultUrl && selected.result && (
             <CompareSlider
               beforeUrl={selected.url}
@@ -245,14 +283,14 @@ export default function ToolWorkbench({ toolId }: { toolId: ToolId }) {
                 {t("cancel")}
               </button>
             ) : (
-              (toolId === "compress" || toolId === "convert") && (
+              (
                 <button
                   type="button"
                   onClick={() => void processAll()}
                   className="flex-1 rounded-xl px-4 py-3 text-sm font-bold text-on-primary"
                   style={{ backgroundColor: `var(--ck-accent-${toolId})` }}
                 >
-                  {toolId === "convert" ? tConvert("process") : tCompress("process")}
+                  {toolId === "convert" ? tConvert("process") : toolId === "resize" ? tResize("process") : tCompress("process")}
                 </button>
               )
             )}

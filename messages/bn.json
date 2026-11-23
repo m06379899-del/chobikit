@@ -161,5 +161,29 @@
     "format": "আউটপুট ফরম্যাট",
     "backgroundColor": "ব্যাকগ্রাউন্ড রঙ",
     "backgroundColorHint": "ছবির স্বচ্ছ জায়গায় এই রঙ বসবে"
+  },
+  "resize": {
+    "process": "সব রিসাইজ করুন",
+    "dimensions": "মাপ দিয়ে",
+    "percent": "শতকরা হিসেবে",
+    "width": "প্রস্থ",
+    "height": "উচ্চতা",
+    "lockAspect": "অনুপাত লক করুন",
+    "presets": "প্রিসেট",
+    "fit": "ফিট",
+    "fitCover": "কভার (ভরে কাটা)",
+    "fitContain": "কনটেইন (পুরো ছবি ঢুকবে)",
+    "format": "আউটপুট ফরম্যাট",
+    "quality": "কোয়ালিটি",
+    "keepOriginal": "আগের ফরম্যাটই থাকবে"
+  },
+  "presets": {
+    "facebookPost": "Facebook পোস্ট",
+    "facebookCover": "Facebook কভার",
+    "instagramSquare": "Instagram স্কয়ার",
+    "instagramStory": "Instagram স্টোরি",
+    "youtubeThumbnail": "YouTube থাম্বনেইল",
+    "whatsappDp": "WhatsApp প্রোফাইল",
+    "passport": "পাসপোর্ট ছবি"
   }
 }

@@ -161,5 +161,29 @@
     "format": "Output format",
     "backgroundColor": "Background color",
     "backgroundColorHint": "Used where the image is transparent"
+  },
+  "resize": {
+    "process": "Resize all",
+    "dimensions": "By dimensions",
+    "percent": "By percent",
+    "width": "Width",
+    "height": "Height",
+    "lockAspect": "Lock aspect ratio",
+    "presets": "Presets",
+    "fit": "Fit",
+    "fitCover": "Cover (crop to fill)",
+    "fitContain": "Contain (fit whole image)",
+    "format": "Output format",
+    "quality": "Quality",
+    "keepOriginal": "Same as original"
+  },
+  "presets": {
+    "facebookPost": "Facebook post",
+    "facebookCover": "Facebook cover",
+    "instagramSquare": "Instagram square",
+    "instagramStory": "Instagram story",
+    "youtubeThumbnail": "YouTube thumbnail",
+    "whatsappDp": "WhatsApp DP",
+    "passport": "Passport photo"
   }
 }
