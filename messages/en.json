@@ -121,5 +121,27 @@
     "title": "Page not found",
     "text": "The page you are looking for does not exist or has moved.",
     "backHome": "Back to home"
+  },
+  "workbench": {
+    "dropTitle": "Drop images here or tap to choose",
+    "dropHint": "JPG, PNG, WebP, AVIF, GIF, BMP or HEIC — up to {count} images at once",
+    "dropActive": "Drop to add your images",
+    "fileTooLarge": "\"{name}\" is too large — the limit is {limit} MB",
+    "tooManyFiles": "You can process up to {count} images at once",
+    "unsupported": "\"{name}\" is not a supported image type",
+    "corrupt": "\"{name}\" looks damaged and cannot be read",
+    "memory": "This device is low on memory — try fewer or smaller images",
+    "batchWarning": "Large batch — this may be slow on your device",
+    "remove": "Remove",
+    "clearAll": "Clear all",
+    "downloadAll": "Download all (ZIP)",
+    "queued": "Waiting",
+    "processing": "Processing",
+    "done": "Done",
+    "error": "Failed",
+    "original": "Original",
+    "result": "New",
+    "saved": "{percent}% smaller",
+    "cancel": "Cancel"
   }
 }

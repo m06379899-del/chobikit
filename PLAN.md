@@ -11,8 +11,7 @@ Owner document: chobikit-master-prompt.md (sections 12). One milestone at a time
   - Empty tool pages (compress/convert/resize) with shared shell
   - About / Privacy / Terms / Contact pages
   - CLAUDE.md, PLAN.md
-- [ ] **Milestone 2 — Shared tool engine**: drop zone, file list, image card, Web Worker
-  messaging helper, ZIP download, error handling, privacy badge, limits config
+- [x] **Milestone 2 — Shared tool engine** (done 2026-11-23): drop zone, file list, image card, Web Worker messaging helper (protocol + WorkerClient), ZIP download (fflate), error handling, batch warning, device-class detection
 - [ ] **Milestone 3 — Image Compressor**: jSquash codecs, quality slider, target-size mode,
   size stats, before/after slider, ZIP
 - [ ] `config/presets.ts` for resize presets and `config/seo-pages.ts` are Milestone 5 / 1b.

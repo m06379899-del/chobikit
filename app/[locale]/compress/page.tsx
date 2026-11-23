@@ -2,6 +2,7 @@ import { setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import ToolPageShell from "@/components/tool-page-shell";
+import ToolWorkbench from "@/components/tool-workbench";
 
 export async function generateMetadata({
   params,
@@ -16,5 +17,9 @@ export default async function CompressPage({
 }: PageProps<"/[locale]/compress">) {
   const { locale } = await params;
   setRequestLocale(locale);
-  return <ToolPageShell toolId="compress" />;
+  return (
+    <ToolPageShell toolId="compress">
+      <ToolWorkbench toolId="compress" />
+    </ToolPageShell>
+  );
 }

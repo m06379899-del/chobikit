@@ -1,6 +1,7 @@
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import type { Metadata } from "next";
 import ToolPageShell from "@/components/tool-page-shell";
+import ToolWorkbench from "@/components/tool-workbench";
 
 export async function generateMetadata({
   params,
@@ -15,5 +16,9 @@ export default async function ResizePage({
 }: PageProps<"/[locale]/resize">) {
   const { locale } = await params;
   setRequestLocale(locale);
-  return <ToolPageShell toolId="resize" />;
+  return (
+    <ToolPageShell toolId="resize">
+      <ToolWorkbench toolId="resize" />
+    </ToolPageShell>
+  );
 }
