@@ -56,7 +56,7 @@ export default async function LocaleLayout({
       className={`${nunito.variable} ${hindSiliguri.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <body className="flex min-h-full flex-col">
+      <body suppressHydrationWarning className="flex min-h-full flex-col">
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
         <NextIntlClientProvider>
           <Header />
