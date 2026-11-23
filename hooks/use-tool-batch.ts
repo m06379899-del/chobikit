@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { LARGE_BATCH_WARNING, validateImageFile } from "@/lib/image/validate";
 
 export type BatchItemStatus = "queued" | "processing" | "done" | "error";
@@ -39,9 +39,15 @@ export interface UseToolBatch {
   removeItem: (id: string) => void;
   clearAll: () => void;
   updateItem: (id: string, patch: Partial<BatchItem>) => void;
+  resetProcessing: () => void;
 }
 
 const MAX_BATCH = 50; // mirrored from config/limits.ts (DEFAULT, owner undecided)
+
+function revokeItem(item: BatchItem): void {
+  URL.revokeObjectURL(item.url);
+  if (item.resultUrl) URL.revokeObjectURL(item.resultUrl);
+}
 
 /**
  * Shared batch state for all image tools: validated file list, object-URL
@@ -53,80 +59,72 @@ export function useToolBatch(): UseToolBatch {
   const [errors, setErrors] = useState<ValidationError[]>([]);
   const [showBatchWarning, setShowBatchWarning] = useState(false);
 
-  // Revoke any object URLs still open when the page unloads.
+  // Mirror for synchronous reads (addFiles) and unmount cleanup — calling
+  // setState inside the unmount cleanup would be discarded by React.
+  const itemsRef = useRef<BatchItem[]>([]);
+
+  useEffect(() => {
+    itemsRef.current = items;
+  }, [items]);
+
   useEffect(() => {
     return () => {
-      setItems((current) => {
-        for (const item of current) {
-          URL.revokeObjectURL(item.url);
-          if (item.resultUrl) URL.revokeObjectURL(item.resultUrl);
-        }
-        return current;
-      });
+      for (const item of itemsRef.current) revokeItem(item);
     };
   }, []);
 
   const addFiles = useCallback((files: File[]) => {
+    const current = itemsRef.current;
+    const capacity = MAX_BATCH - current.length;
     const newErrors: ValidationError[] = [];
-    setItems((current) => {
-      let capacity = MAX_BATCH - current.length;
-      if (capacity <= 0) {
+    const accepted: BatchItem[] = [];
+
+    if (capacity <= 0) {
+      newErrors.push({ id: crypto.randomUUID(), key: "tooManyFiles" });
+    }
+    for (const file of files) {
+      const validation = validateImageFile(file);
+      if (!validation.ok) {
         newErrors.push({
           id: crypto.randomUUID(),
-          key: "tooManyFiles",
+          key: validation.reason,
+          name: file.name,
         });
-        return current;
+        continue;
       }
-      const accepted: BatchItem[] = [];
-      for (const file of files) {
-        const validation = validateImageFile(file);
-        if (!validation.ok) {
-          newErrors.push({
-            id: crypto.randomUUID(),
-            key: validation.reason,
-            name: file.name,
-          });
-          continue;
-        }
-        if (capacity <= 0) {
-          newErrors.push({ id: crypto.randomUUID(), key: "tooManyFiles" });
-          break;
-        }
-        capacity--;
-        accepted.push({
-          id: crypto.randomUUID(),
-          file,
-          url: URL.createObjectURL(file),
-          status: "queued",
-        });
+      if (current.length + accepted.length >= MAX_BATCH) {
+        newErrors.push({ id: crypto.randomUUID(), key: "tooManyFiles" });
+        break;
       }
-      const next = [...current, ...accepted];
-      setShowBatchWarning(next.length > LARGE_BATCH_WARNING);
-      return next;
-    });
+      accepted.push({
+        id: crypto.randomUUID(),
+        file,
+        url: URL.createObjectURL(file),
+        status: "queued",
+      });
+    }
+
+    const next = [...current, ...accepted];
+    itemsRef.current = next;
+    setItems(next);
     setErrors(newErrors);
+    setShowBatchWarning(next.length > LARGE_BATCH_WARNING);
   }, []);
 
   const removeItem = useCallback((id: string) => {
-    setItems((current) => {
-      const item = current.find((entry) => entry.id === id);
-      if (item) {
-        URL.revokeObjectURL(item.url);
-        if (item.resultUrl) URL.revokeObjectURL(item.resultUrl);
-      }
-      return current.filter((entry) => entry.id !== id);
-    });
-    setShowBatchWarning(false);
+    const current = itemsRef.current;
+    const item = current.find((entry) => entry.id === id);
+    if (item) revokeItem(item);
+    const next = current.filter((entry) => entry.id !== id);
+    itemsRef.current = next;
+    setItems(next);
+    setShowBatchWarning(next.length > LARGE_BATCH_WARNING);
   }, []);
 
   const clearAll = useCallback(() => {
-    setItems((current) => {
-      for (const item of current) {
-        URL.revokeObjectURL(item.url);
-        if (item.resultUrl) URL.revokeObjectURL(item.resultUrl);
-      }
-      return [];
-    });
+    for (const item of itemsRef.current) revokeItem(item);
+    itemsRef.current = [];
+    setItems([]);
     setErrors([]);
     setShowBatchWarning(false);
   }, []);
@@ -134,6 +132,14 @@ export function useToolBatch(): UseToolBatch {
   const updateItem = useCallback((id: string, patch: Partial<BatchItem>) => {
     setItems((current) =>
       current.map((item) => (item.id === id ? { ...item, ...patch } : item)),
+    );
+  }, []);
+
+  const resetProcessing = useCallback(() => {
+    setItems((current) =>
+      current.map((item) =>
+        item.status === "processing" ? { ...item, status: "queued" } : item,
+      ),
     );
   }, []);
 
@@ -150,5 +156,6 @@ export function useToolBatch(): UseToolBatch {
     removeItem,
     clearAll,
     updateItem,
+    resetProcessing,
   };
 }

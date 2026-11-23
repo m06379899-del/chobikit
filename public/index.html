@@ -9,14 +9,7 @@
         try {
           stored = localStorage.getItem("chobikit-locale");
         } catch (e) {}
-        var lang = stored;
-        if (lang !== "bn" && lang !== "en") {
-          var langs = navigator.languages || [navigator.language];
-          var bn = langs.some(function (l) {
-            return l && l.slice(0, 2).toLowerCase() === "bn";
-          });
-          lang = bn ? "bn" : "en";
-        }
+        var lang = stored === "bn" ? "bn" : "en";
         location.replace("/" + lang + "/");
       })();
     </script>

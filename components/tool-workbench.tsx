@@ -64,6 +64,7 @@ export default function ToolWorkbench({ toolId }: { toolId: ToolId }) {
 
   const clientRef = useRef<WorkerClient<CompressJob | ResizeJob, CompressOutcome> | null>(null);
   const cancelRequested = useRef(false);
+  const processingIdRef = useRef<string | null>(null);
 
   useEffect(() => {
     return () => {
@@ -83,6 +84,11 @@ export default function ToolWorkbench({ toolId }: { toolId: ToolId }) {
     }
     return clientRef.current;
   }, []);
+
+  function handleAddFiles(files: File[]) {
+    setSummaryPercent(null);
+    batch.addFiles(files);
+  }
 
   function getSettings(id: string): CompressSettings | ConvertSettings {
     if (toolId === "convert") return settings[id] ?? DEFAULT_CONVERT_SETTINGS;
@@ -106,6 +112,7 @@ export default function ToolWorkbench({ toolId }: { toolId: ToolId }) {
 
     for (const item of batch.items) {
       if (cancelRequested.current) break;
+      processingIdRef.current = item.id;
       batch.updateItem(item.id, { status: "processing", errorKey: undefined });
       try {
         // iPhone HEIC photos decode via heic2any on the main thread first.
@@ -194,6 +201,7 @@ export default function ToolWorkbench({ toolId }: { toolId: ToolId }) {
     } else {
       setSummaryPercent(null);
     }
+    processingIdRef.current = null;
     setLastTargetMissed(targetMissed);
     setRunning(false);
   }
@@ -201,6 +209,8 @@ export default function ToolWorkbench({ toolId }: { toolId: ToolId }) {
   function cancel() {
     cancelRequested.current = true;
     clientRef.current?.cancelAll();
+    batch.resetProcessing();
+    setSummaryPercent(null);
     setRunning(false);
   }
 
@@ -209,7 +219,7 @@ export default function ToolWorkbench({ toolId }: { toolId: ToolId }) {
 
   return (
     <div className="flex flex-col gap-4">
-      <DropZone onFiles={batch.addFiles} count={IMAGE_LIMITS.maxBatchSize} />
+      <DropZone onFiles={handleAddFiles} count={IMAGE_LIMITS.maxBatchSize} />
 
       {batch.errors.length > 0 && (
         <ul

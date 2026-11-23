@@ -35,7 +35,7 @@ export default function ThemeToggle() {
       title={isLight ? t("toDark") : t("toLight")}
       className="flex h-11 w-11 items-center justify-center rounded-xl border border-border bg-surface text-lg transition-colors hover:bg-surface-2"
     >
-      <span aria-hidden="true">{isLight ? "🌙" : "☀️"}</span>
+      <span aria-hidden="true" suppressHydrationWarning>{isLight ? "🌙" : "☀️"}</span>
     </button>
   );
 }
